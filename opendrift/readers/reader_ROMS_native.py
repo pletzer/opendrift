@@ -320,7 +320,8 @@ class Reader(BaseReader, StructuredReader):
                 raise Exception('Wrong dimension of variable: ' +
                                 self.variable_mapping[par])
 
-            variables[par] = np.asarray(variables[par])  # If Xarray
+            if type(variables[par]) != np.ndarray:
+                variables[par] = np.asarray(variables[par])  # If Xarray
             start = datetime.now()
 
             if par not in mask_values:
