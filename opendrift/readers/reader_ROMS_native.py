@@ -211,6 +211,7 @@ class Reader(BaseReader, StructuredReader):
         # Run constructor of parent Reader class
         super(Reader, self).__init__()
 
+    @profile
     def get_variables(self, requested_variables, time=None,
                       x=None, y=None, z=None):
         start_time = datetime.now()
@@ -346,7 +347,8 @@ class Reader(BaseReader, StructuredReader):
                         # For ROMS-Agrif this must perhaps be mask_psi?
                         self.mask_rho = self.Dataset.variables['mask_rho'][:]
                     mask = self.mask_rho[indygrid, indxgrid]
-                mask = np.asarray(mask)
+                if type(mask) != np.ndarray:
+                    mask = np.asarray(mask)
                 if mask.min() == 0 and par != 'land_binary_mask':
                     first_mask_point = np.where(mask.ravel()==0)[0][0]
                     if variables[par].ndim == 3:
